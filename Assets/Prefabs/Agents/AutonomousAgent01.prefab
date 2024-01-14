@@ -82,7 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 024dc115f03f3a64ab20834ee7d80384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tagName: Agent03
+  tagName: Agent02
   distance: 5
   maxAngle: 45
 --- !u!114 &-7756032412917699644
@@ -97,9 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 024dc115f03f3a64ab20834ee7d80384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tagName: Agent02
-  distance: 5
-  maxAngle: 45
+  tagName: Agent03
+  distance: 10
+  maxAngle: 60
 --- !u!114 &6015270850271370917
 MonoBehaviour:
   m_ObjectHideFlags: 0
