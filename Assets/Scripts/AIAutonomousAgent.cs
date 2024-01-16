@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class AIAutonomousAgent : AIAgent
 {
-    public AIPerception seekPerception = null;
-    public AIPerception fleePerception = null;
-    public AIPerception flockPerception = null;
+    [SerializeField] AIPerception seekPerception = null;
+    [SerializeField] AIPerception fleePerception = null;
+    [SerializeField] AIPerception flockPerception = null;
+    [SerializeField] AIPerception obstaclePerception = null;
 
     private void Update()
     {
@@ -44,6 +45,12 @@ public class AIAutonomousAgent : AIAgent
             }
         }
 
+        // obstacle avoidance
+        {
+            var gameObjects = obstaclePerception.GetGameObjects();
+        }
+
+        // wrap position in world
 		transform.position = Utilities.Wrap(transform.position, new Vector3(-8, -1, -8), new Vector3(8, 10, 8));
     }
 
