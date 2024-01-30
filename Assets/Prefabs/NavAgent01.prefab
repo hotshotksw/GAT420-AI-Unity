@@ -129,7 +129,7 @@ MonoBehaviour:
   maxSpeed: 5
   minSpeed: 5
   maxForce: 30
-  turnRate: 90
+  turnRate: 180
 --- !u!136 &5154724998517678860
 CapsuleCollider:
   m_ObjectHideFlags: 0
