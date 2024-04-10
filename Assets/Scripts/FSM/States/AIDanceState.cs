@@ -4,33 +4,26 @@ using UnityEngine;
 
 public class AIDanceState : AIState
 {
-    float timer;
-    
+
     public AIDanceState(AIStateAgent agent) : base(agent)
     {
-    }
+		AIStateTransition transition = new AIStateTransition(nameof(AIPatrolState));
+		transition.AddCondition(new FloatCondition(agent.timer, Condition.Predicate.LESS, 0));
+		transitions.Add(transition);
+	}
 
     public override void OnEnter()
     {
 		agent.animator?.SetTrigger("Dance");
-		timer = Time.time + 2;
+		agent.timer.value = 2f;
 	}
+    public override void OnUpdate()
+    {
+    }
 
     public override void OnExit()
     {
+        Debug.Log("attack exit");
     }
 
-    public override void OnUpdate()
-    {
-        if (Time.time > timer)
-        {
-            agent.stateMachine.SetState(nameof(AIIdleState));
-        }
-
-        var enemies = agent.enemyPerception.GetGameObjects();
-        if (enemies.Length > 0)
-        {
-            agent.stateMachine.SetState(nameof(AIAttackState));
-        }
-    }
 }

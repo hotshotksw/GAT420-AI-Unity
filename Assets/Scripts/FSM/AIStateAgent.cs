@@ -9,7 +9,7 @@ public class AIStateAgent : AIAgent
     //public float health = 100;
 
     // parameters
-    public ValueRef<float> health = new ValueRef<float>(); // --> memory
+    public ValueRef<float> health = new ValueRef<float>(100); // --> memory
     public ValueRef<float> timer = new ValueRef<float>();  // --> memory
     public ValueRef<float> destinationDistance = new ValueRef<float>();
 
@@ -30,7 +30,7 @@ public class AIStateAgent : AIAgent
         stateMachine.AddState(nameof(AIDeathState), new AIDeathState(this));
         stateMachine.AddState(nameof(AIDanceState), new AIDanceState(this));
         stateMachine.AddState(nameof(AIExcitedState), new AIExcitedState(this));
-        stateMachine.AddState(nameof(AIStretchedState), new AIStretchedState(this));
+        stateMachine.AddState(nameof(AIStretchState), new AIStretchState(this));
 
         stateMachine.SetState(nameof(AIIdleState));
     }
@@ -54,7 +54,18 @@ public class AIStateAgent : AIAgent
         if (health <= 0) stateMachine.SetState(nameof(AIDeathState));
         
         animator?.SetFloat("Speed", movement.Velocity.magnitude);
-        stateMachine.Update();
+
+        // check for transitions
+		foreach (var transition in stateMachine.CurrentState.transitions)
+		{
+			if (transition.ToTransition())
+			{
+				stateMachine.SetState(transition.nextState);
+				break;
+			}
+		}
+
+		stateMachine.Update();
     }
 
 	public void ApplyDamage(float damage)

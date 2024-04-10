@@ -4,48 +4,53 @@ using UnityEngine;
 
 public class AIIdleState : AIState
 {
-    float timer;
-    AIStateTransition transition = new AIStateTransition(nameof(AIPatrolState));
+    
     
     public AIIdleState(AIStateAgent agent) : base(agent)
     {
-        transition.AddCondition(new FloatCondition(agent.timer, Condition.Predicate.LESS, 0));
+        AIStateTransition transition;
+
+
+		int n = Random.Range(0, 10);
+        
+        if (n < 1)
+        {
+			transition = new AIStateTransition(nameof(AIDanceState));
+			transition.AddCondition(new FloatCondition(agent.timer, Condition.Predicate.LESS, 0));
+			transitions.Add(transition);
+		} else if (n < 2)
+        {
+			transition = new AIStateTransition(nameof(AIExcitedState));
+			transition.AddCondition(new FloatCondition(agent.timer, Condition.Predicate.LESS, 0));
+			transitions.Add(transition);
+		} else if (n < 3)
+        {
+			transition = new AIStateTransition(nameof(AIStretchState));
+			transition.AddCondition(new FloatCondition(agent.timer, Condition.Predicate.LESS, 0));
+			transitions.Add(transition);
+		} else
+        {
+			transition = new AIStateTransition(nameof(AIPatrolState));
+			transition.AddCondition(new FloatCondition(agent.timer, Condition.Predicate.LESS, 0));
+			transitions.Add(transition);
+		}
+
+        transition = new AIStateTransition(nameof(AIChaseState));
+        transition.AddCondition(new BoolCondition(agent.enemySeen));
+        transitions.Add(transition);
     }
 
     public override void OnEnter()
     {
-		timer = Time.time + Random.Range(1, 2);
+		agent.timer.value = Random.Range(1, 3);
     }
 
     public override void OnExit()
     {
+        Debug.Log(agent.timer.value);
     }
 
     public override void OnUpdate()
     {
-        if (Time.time > timer)
-        {
-			float n = Random.Range(0f, 10f);
-
-			if (n < 2f)
-			{
-				agent.stateMachine.SetState(nameof(AIDanceState));
-			} else if (n < 3f)
-            {
-                agent.stateMachine.SetState(nameof(AIExcitedState));
-            } else if (n < 4f)
-            {
-				agent.stateMachine.SetState(nameof(AIStretchedState));
-			} else
-            {
-				agent.stateMachine.SetState(nameof(AIPatrolState));
-			}
-        }
-
-        var enemies = agent.enemyPerception.GetGameObjects();
-        if (enemies.Length > 0)
-        {
-            agent.stateMachine.SetState(nameof(AIAttackState));
-        }
     }
 }

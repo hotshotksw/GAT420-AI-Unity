@@ -28,7 +28,7 @@ public class AIStateTransition
 	{
 		foreach (var condition in conditions)
 		{
-			if (condition.IsTrue()) return false;
+			if (!condition.IsTrue()) return false;
 		}
 		
 		return true;
